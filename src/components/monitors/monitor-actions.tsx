@@ -116,12 +116,12 @@ export function MonitorActions({ monitor }: MonitorActionsProps) {
         )}
       </Button>
 
-      <Link to="/monitors/$monitorId/edit" params={{ monitorId: monitor.id }}>
-        <Button variant="outline" size="sm">
+      <Button asChild variant="outline" size="sm">
+        <Link to="/monitors/$monitorId/edit" params={{ monitorId: monitor.id }}>
           <Pencil className="h-4 w-4 mr-1" />
           Edit
-        </Button>
-      </Link>
+        </Link>
+      </Button>
 
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DialogTrigger asChild>

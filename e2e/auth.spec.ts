@@ -9,13 +9,13 @@ test.describe('Login Page', () => {
     await expect(page.getByRole('heading', { name: 'Sign In' })).toBeVisible()
     await expect(page.getByLabel('Email')).toBeVisible()
     await expect(page.getByLabel('Password')).toBeVisible()
-    await expect(page.getByRole('button', { name: 'Sign In' })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Sign In', exact: true })).toBeVisible()
   })
 
   test('shows validation on empty submit', async ({ page }) => {
     await page.goto('/login')
     // HTML5 required validation prevents submission with empty fields
-    await page.getByRole('button', { name: 'Sign In' }).click()
+    await page.getByRole('button', { name: 'Sign In', exact: true }).click()
     // Should remain on the login page
     await expect(page).toHaveURL(/\/login/)
   })

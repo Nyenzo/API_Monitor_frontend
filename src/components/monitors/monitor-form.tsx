@@ -105,7 +105,7 @@ export function MonitorForm({ monitor, mode }: MonitorFormProps) {
     <form onSubmit={handleSubmit}>
       <Card>
         <CardHeader>
-          <CardTitle>{mode === 'create' ? 'New Monitor' : 'Edit Monitor'}</CardTitle>
+          <CardTitle>{mode === 'create' ? 'Monitor Configuration' : 'Edit Configuration'}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">

@@ -8,16 +8,12 @@ test.describe('Monitors List', () => {
 
   test('shows new monitor button', async ({ page }) => {
     await page.goto('/monitors')
-    await expect(page.getByRole('link', { name: /new monitor|add monitor/i }).or(
-      page.getByRole('button', { name: /new monitor|add monitor/i })
-    )).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Add Monitor', exact: true })).toBeVisible()
   })
 
   test('can navigate to new monitor form', async ({ page }) => {
     await page.goto('/monitors')
-    await page.getByRole('link', { name: /new monitor|add monitor/i }).or(
-      page.getByRole('button', { name: /new monitor|add monitor/i })
-    ).click()
+    await page.getByRole('link', { name: 'Add Monitor', exact: true }).click()
     await expect(page).toHaveURL(/\/monitors\/new/)
   })
 })
@@ -25,7 +21,7 @@ test.describe('Monitors List', () => {
 test.describe('New Monitor Form', () => {
   test('shows the creation form', async ({ page }) => {
     await page.goto('/monitors/new')
-    await expect(page.getByRole('heading', { name: /new monitor/i })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'New Monitor', exact: true })).toBeVisible()
     await expect(page.getByLabel(/name/i)).toBeVisible()
     await expect(page.getByLabel(/url/i)).toBeVisible()
   })

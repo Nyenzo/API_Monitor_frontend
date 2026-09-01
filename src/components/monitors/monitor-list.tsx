@@ -53,12 +53,12 @@ export function MonitorList() {
             </SelectContent>
           </Select>
         </div>
-        <Link to="/monitors/new">
-          <Button>
+        <Button asChild>
+          <Link to="/monitors/new">
             <Plus className="h-4 w-4 mr-2" />
             Add Monitor
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
 
       {isLoading ? (
@@ -70,12 +70,12 @@ export function MonitorList() {
           description={search ? 'Try adjusting your search.' : 'Create your first monitor to start tracking.'}
         >
           {!search && (
-            <Link to="/monitors/new">
-              <Button>
+            <Button asChild>
+              <Link to="/monitors/new">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Monitor
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           )}
         </EmptyState>
       ) : (

@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from 'react'
 import { supabase } from '@/lib/supabase'
-import type { Session, User } from '@supabase/supabase-js'
+import type { Provider, Session, User } from '@supabase/supabase-js'
 
 // Shape of the authentication context exposed to consumers
 interface AuthContextType {
@@ -10,6 +10,7 @@ interface AuthContextType {
   isAuthenticated: boolean
   signUp: (email: string, password: string, fullName: string) => Promise<void>
   signIn: (email: string, password: string) => Promise<void>
+  signInWithOAuth: (provider: Provider) => Promise<void>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<void>
   updatePassword: (newPassword: string) => Promise<void>
@@ -56,6 +57,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) throw error
   }, [])
 
+  const signInWithOAuth = useCallback(async (provider: Provider) => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    })
+    if (error) throw error
+  }, [])
+
   // End the current session and clear stored credentials
   const signOut = useCallback(async () => {
     const { error } = await supabase.auth.signOut()
@@ -85,6 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!session,
         signUp,
         signIn,
+        signInWithOAuth,
         signOut,
         resetPassword,
         updatePassword,
