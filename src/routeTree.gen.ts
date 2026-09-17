@@ -17,6 +17,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedReleaseVerificationsRouteImport } from './routes/_authenticated/release-verifications'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAlertsRouteImport } from './routes/_authenticated/alerts'
 import { Route as AuthenticatedMonitorsIndexRouteImport } from './routes/_authenticated/monitors/index'
@@ -63,6 +64,12 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedReleaseVerificationsRoute =
+  AuthenticatedReleaseVerificationsRouteImport.update({
+    id: '/release-verifications',
+    path: '/release-verifications',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -106,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/alerts': typeof AuthenticatedAlertsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/release-verifications': typeof AuthenticatedReleaseVerificationsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/monitors/new': typeof AuthenticatedMonitorsNewRoute
@@ -121,6 +129,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/alerts': typeof AuthenticatedAlertsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/release-verifications': typeof AuthenticatedReleaseVerificationsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/monitors/new': typeof AuthenticatedMonitorsNewRoute
@@ -138,6 +147,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_authenticated/alerts': typeof AuthenticatedAlertsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/release-verifications': typeof AuthenticatedReleaseVerificationsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/_authenticated/monitors/new': typeof AuthenticatedMonitorsNewRoute
@@ -155,6 +165,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/alerts'
     | '/dashboard'
+    | '/release-verifications'
     | '/settings'
     | '/auth/callback'
     | '/monitors/new'
@@ -170,6 +181,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/alerts'
     | '/dashboard'
+    | '/release-verifications'
     | '/settings'
     | '/auth/callback'
     | '/monitors/new'
@@ -186,6 +198,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_authenticated/alerts'
     | '/_authenticated/dashboard'
+    | '/_authenticated/release-verifications'
     | '/_authenticated/settings'
     | '/auth/callback'
     | '/_authenticated/monitors/new'
@@ -262,6 +275,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/release-verifications': {
+      id: '/_authenticated/release-verifications'
+      path: '/release-verifications'
+      fullPath: '/release-verifications'
+      preLoaderRoute: typeof AuthenticatedReleaseVerificationsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -310,6 +330,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteChildren {
   AuthenticatedAlertsRoute: typeof AuthenticatedAlertsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedReleaseVerificationsRoute: typeof AuthenticatedReleaseVerificationsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedMonitorsNewRoute: typeof AuthenticatedMonitorsNewRoute
   AuthenticatedMonitorsIndexRoute: typeof AuthenticatedMonitorsIndexRoute
@@ -320,6 +341,8 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAlertsRoute: AuthenticatedAlertsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedReleaseVerificationsRoute:
+    AuthenticatedReleaseVerificationsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedMonitorsNewRoute: AuthenticatedMonitorsNewRoute,
   AuthenticatedMonitorsIndexRoute: AuthenticatedMonitorsIndexRoute,

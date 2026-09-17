@@ -4,12 +4,11 @@ import { StatusBadge } from '@/components/shared/status-badge'
 import { LoadingSpinner } from '@/components/shared/loading-spinner'
 import { Link } from '@tanstack/react-router'
 
-// Derive up/down/paused status from a monitor's active state and failure count
-function deriveStatus(monitor: { is_active: boolean; last_status_code?: number | null; consecutive_failures?: number }): 'up' | 'down' | 'degraded' | 'paused' {
+// Use the monitor's denormalized latest-check result returned by the API.
+function deriveStatus(monitor: { is_active: boolean; last_check_success?: boolean | null }): 'up' | 'down' | 'paused' | 'unknown' {
   if (!monitor.is_active) return 'paused'
-  if (monitor.last_status_code == null) return 'paused'
-  if ((monitor.consecutive_failures ?? 0) > 0) return 'down'
-  return 'up'
+  if (monitor.last_check_success == null) return 'unknown'
+  return monitor.last_check_success ? 'up' : 'down'
 }
 
 // Card grid showing all monitors with their name, URL, and current status badge

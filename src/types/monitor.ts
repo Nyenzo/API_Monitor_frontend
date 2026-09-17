@@ -11,6 +11,9 @@ export interface Monitor {
   timeout_ms: number
   expected_status: number | null
   expected_body_contains: string
+  monitor_kind: 'uptime' | 'contract'
+  contract_operation_id?: string | null
+  required_json_paths: string[]
   is_active: boolean
   last_check_success?: boolean | null
   last_checked_at: string | null
@@ -41,6 +44,9 @@ export interface MonitorCreate {
   timeout_ms?: number
   expected_status?: number
   expected_body_contains?: string
+  monitor_kind?: 'uptime' | 'contract'
+  contract_operation_id?: string
+  required_json_paths?: string[]
 }
 
 // Payload for partially updating an existing monitor
@@ -54,5 +60,8 @@ export interface MonitorUpdate {
   timeout_ms?: number
   expected_status?: number
   expected_body_contains?: string
+  monitor_kind?: 'uptime' | 'contract'
+  contract_operation_id?: string | null
+  required_json_paths?: string[]
   is_active?: boolean
 }

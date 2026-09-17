@@ -4,6 +4,7 @@ import {
   Activity,
   Bell,
   Settings,
+  ShieldCheck,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react'
@@ -17,6 +18,7 @@ const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/monitors', label: 'Monitors', icon: Activity },
   { to: '/alerts', label: 'Alerts', icon: Bell },
+  { to: '/release-verifications', label: 'Release Checks', icon: ShieldCheck },
   { to: '/settings', label: 'Settings', icon: Settings },
 ] as const
 

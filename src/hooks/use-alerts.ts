@@ -2,6 +2,13 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@/lib/api'
 import type { AlertRule, AlertRuleCreate, AlertHistoryListResponse } from '@/types/alert'
 
+function invalidateAlertRuleLists(qc: ReturnType<typeof useQueryClient>, monitorId?: string) {
+  if (monitorId) {
+    qc.invalidateQueries({ queryKey: ['alert-rules', monitorId] })
+  }
+  qc.invalidateQueries({ queryKey: ['all-alert-rules'] })
+}
+
 // Fetch all alert rules configured for a specific monitor
 export function useAlertRules(monitorId: string) {
   return useQuery({
@@ -18,7 +25,7 @@ export function useCreateAlertRule() {
   return useMutation({
     mutationFn: ({ monitorId, data }: { monitorId: string; data: AlertRuleCreate }) =>
       api.post<AlertRule>(`/api/v1/monitors/${monitorId}/alerts`, data),
-    onSuccess: (_r, { monitorId }) => { qc.invalidateQueries({ queryKey: ['alert-rules', monitorId] }) },
+    onSuccess: (_r, { monitorId }) => invalidateAlertRuleLists(qc, monitorId),
   })
 }
 
@@ -28,7 +35,7 @@ export function useUpdateAlertRule() {
   return useMutation({
     mutationFn: ({ alertId, data }: { alertId: string; data: Partial<AlertRuleCreate & { is_active: boolean }> }) =>
       api.patch<AlertRule>(`/api/v1/alerts/${alertId}`, data),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['alert-rules'] }) },
+    onSuccess: () => invalidateAlertRuleLists(qc),
   })
 }
 
@@ -37,7 +44,7 @@ export function useDeleteAlertRule() {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: (alertId: string) => api.del(`/api/v1/alerts/${alertId}`),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['alert-rules'] }) },
+    onSuccess: () => invalidateAlertRuleLists(qc),
   })
 }
 

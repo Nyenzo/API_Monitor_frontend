@@ -27,6 +27,18 @@ test.describe('Login Page', () => {
   })
 })
 
+test.describe('Landing Page', () => {
+  test.use({ storageState: { cookies: [], origins: [] } })
+
+  test('explains the release-verification workflow and offers account entry points', async ({ page }) => {
+    await page.goto('/')
+
+    await expect(page.getByRole('heading', { name: 'Know a release broke an API before your customers do.' })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Start verifying' }).first()).toHaveAttribute('href', '/signup')
+    await expect(page.getByRole('link', { name: 'Sign in' })).toHaveAttribute('href', '/login')
+  })
+})
+
 test.describe('Signup Page', () => {
   test.use({ storageState: { cookies: [], origins: [] } })
 

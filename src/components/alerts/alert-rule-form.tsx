@@ -12,6 +12,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -89,6 +90,9 @@ export function AlertRuleForm({ rule, open, onClose, preselectedMonitorId }: Ale
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{rule ? 'Edit Alert Rule' : 'New Alert Rule'}</DialogTitle>
+          <DialogDescription>
+            Choose a monitor and notification destination for this alert rule.
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">

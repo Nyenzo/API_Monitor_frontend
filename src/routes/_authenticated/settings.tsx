@@ -83,6 +83,16 @@ function SettingsPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handlePasswordChange} className="space-y-4">
+            <Input
+              type="email"
+              name="username"
+              value={user?.email ?? ''}
+              autoComplete="username"
+              readOnly
+              tabIndex={-1}
+              aria-hidden="true"
+              className="sr-only"
+            />
             <div className="space-y-2">
               <Label htmlFor="newPassword">New Password</Label>
               <Input
