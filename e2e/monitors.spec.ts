@@ -16,6 +16,25 @@ test.describe('Monitors List', () => {
     await page.getByRole('link', { name: 'Add Monitor', exact: true }).click()
     await expect(page).toHaveURL(/\/monitors\/new/)
   })
+
+  test('sends search and status filters to the monitor API', async ({ page }) => {
+    await page.goto('/monitors')
+
+    const searchRequest = page.waitForRequest((request) => {
+      const url = new URL(request.url())
+      return url.pathname === '/api/v1/monitors' && url.searchParams.get('search') === 'qa-method-put'
+    })
+    await page.getByPlaceholder('Search monitors...').fill('qa-method-put')
+    await searchRequest
+
+    const statusRequest = page.waitForRequest((request) => {
+      const url = new URL(request.url())
+      return url.pathname === '/api/v1/monitors' && url.searchParams.get('is_active') === 'false'
+    })
+    await page.getByRole('combobox').click()
+    await page.getByRole('option', { name: 'Paused' }).click()
+    await statusRequest
+  })
 })
 
 test.describe('New Monitor Form', () => {

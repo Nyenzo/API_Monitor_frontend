@@ -3,11 +3,12 @@ import { api } from '@/lib/api'
 import type { Monitor, MonitorListResponse, MonitorCreate, MonitorUpdate } from '@/types/monitor'
 
 // Fetch a paginated list of monitors with optional search filter
-export function useMonitors(page = 1, perPage = 20, search?: string) {
+export function useMonitors(page = 1, perPage = 20, search?: string, isActive?: boolean) {
   const params = new URLSearchParams({ page: String(page), per_page: String(perPage) })
   if (search) params.set('search', search)
+  if (isActive !== undefined) params.set('is_active', String(isActive))
   return useQuery({
-    queryKey: ['monitors', page, perPage, search],
+    queryKey: ['monitors', page, perPage, search, isActive],
     queryFn: () => api.get<MonitorListResponse>(`/api/v1/monitors?${params}`),
   })
 }

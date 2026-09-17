@@ -21,16 +21,9 @@ export function MonitorList() {
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
 
-  const { data, isLoading } = useMonitors(page, 20)
-
-  const monitors = (data?.monitors ?? []).filter((m) => {
-    if (search && !m.name.toLowerCase().includes(search.toLowerCase()) && !m.url.toLowerCase().includes(search.toLowerCase())) {
-      return false
-    }
-    if (statusFilter === 'active') return m.is_active
-    if (statusFilter === 'paused') return !m.is_active
-    return true
-  })
+  const isActive = statusFilter === 'all' ? undefined : statusFilter === 'active'
+  const { data, isLoading } = useMonitors(page, 20, search || undefined, isActive)
+  const monitors = data?.monitors ?? []
 
   return (
     <div className="space-y-4">
@@ -39,10 +32,16 @@ export function MonitorList() {
           <Input
             placeholder="Search monitors..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value)
+              setPage(1)
+            }}
             className="max-w-xs"
           />
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <Select value={statusFilter} onValueChange={(value) => {
+            setStatusFilter(value)
+            setPage(1)
+          }}>
             <SelectTrigger className="w-[130px]">
               <SelectValue />
             </SelectTrigger>
