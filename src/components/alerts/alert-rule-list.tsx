@@ -73,6 +73,7 @@ export function AlertRuleList() {
                   <Button
                     variant="ghost"
                     size="icon"
+                    aria-label={`Edit alert rule for ${rule.target}`}
                     onClick={() => { setEditingRule(rule); setFormOpen(true) }}
                   >
                     <Pencil className="h-4 w-4" />
@@ -80,6 +81,7 @@ export function AlertRuleList() {
                   <Button
                     variant="ghost"
                     size="icon"
+                    aria-label={`Delete alert rule for ${rule.target}`}
                     onClick={() => handleDelete(rule.id)}
                   >
                     <Trash2 className="h-4 w-4 text-destructive" />

@@ -3,7 +3,7 @@ import { api } from '@/lib/api'
 import type { CheckResultListResponse, MonitorStats } from '@/types/api'
 
 // Fetch paginated check results for a monitor with auto-refresh every 30 seconds
-export function useCheckResults(monitorId: string, page = 1, perPage = 50, hours = 24) {
+export function useCheckResults(monitorId: string, page = 1, perPage = 50, hours = 24, enabled = true) {
   const params = new URLSearchParams({
     page: String(page),
     per_page: String(perPage),
@@ -12,17 +12,17 @@ export function useCheckResults(monitorId: string, page = 1, perPage = 50, hours
   return useQuery({
     queryKey: ['check-results', monitorId, page, perPage, hours],
     queryFn: () => api.get<CheckResultListResponse>(`/api/v1/monitors/${monitorId}/results?${params}`),
-    enabled: !!monitorId,
+    enabled: Boolean(monitorId) && enabled,
     refetchInterval: 30000,
   })
 }
 
 // Fetch aggregated uptime and latency stats for a monitor, refreshed every 60 seconds
-export function useMonitorStats(monitorId: string, hours = 24) {
+export function useMonitorStats(monitorId: string, hours = 24, enabled = true) {
   return useQuery({
     queryKey: ['monitor-stats', monitorId, hours],
     queryFn: () => api.get<MonitorStats>(`/api/v1/monitors/${monitorId}/stats?hours=${hours}`),
-    enabled: !!monitorId,
+    enabled: Boolean(monitorId) && enabled,
     refetchInterval: 60000,
   })
 }

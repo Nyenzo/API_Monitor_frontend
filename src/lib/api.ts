@@ -63,4 +63,22 @@ export const api = {
     })
     return handleResponse<T>(response)
   },
+
+  // Download an authenticated CSV or other file response.
+  async download(path: string, filename: string): Promise<void> {
+    const headers = await getAuthHeaders()
+    const response = await fetch(`${API_BASE}${path}`, { headers })
+    if (!response.ok) {
+      await handleResponse(response)
+      return
+    }
+    const objectUrl = URL.createObjectURL(await response.blob())
+    const link = document.createElement('a')
+    link.href = objectUrl
+    link.download = filename
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    URL.revokeObjectURL(objectUrl)
+  },
 }

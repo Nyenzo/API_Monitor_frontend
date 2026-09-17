@@ -2,6 +2,7 @@ import { useMonitor } from '@/hooks/use-monitors'
 import { useCheckResults, useMonitorStats } from '@/hooks/use-check-results'
 import { useRealtimeCheckResults } from '@/hooks/use-realtime'
 import { LoadingSpinner } from '@/components/shared/loading-spinner'
+import { EmptyState } from '@/components/shared/empty-state'
 import { MonitorActions } from './monitor-actions'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { LatencyChart } from '@/components/dashboard/latency-chart'
@@ -9,7 +10,7 @@ import { UptimeChart } from '@/components/dashboard/uptime-chart'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { formatMs, formatRelativeTime, formatUptime } from '@/lib/utils'
-import { ArrowLeft, Clock, Globe } from 'lucide-react'
+import { Activity, ArrowLeft, Clock, Globe } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 
@@ -25,13 +26,28 @@ function deriveStatus(monitor: { is_active: boolean; last_check_success?: boolea
 }
 
 export function MonitorDetail({ monitorId }: MonitorDetailProps) {
-  const { data: monitor, isLoading } = useMonitor(monitorId)
-  const { data: checksData } = useCheckResults(monitorId, 1, 100)
-  const { data: stats } = useMonitorStats(monitorId)
+  const { data: monitor, isLoading, isError } = useMonitor(monitorId)
+  const hasMonitor = Boolean(monitor)
+  const { data: checksData } = useCheckResults(monitorId, 1, 100, 24, hasMonitor)
+  const { data: stats } = useMonitorStats(monitorId, 24, hasMonitor)
 
-  useRealtimeCheckResults(monitorId)
+  useRealtimeCheckResults(hasMonitor ? monitorId : undefined)
 
-  if (isLoading || !monitor) return <LoadingSpinner label="Loading monitor..." />
+  if (isLoading) return <LoadingSpinner label="Loading monitor..." />
+
+  if (isError || !monitor) {
+    return (
+      <EmptyState
+        icon={Activity}
+        title="Monitor unavailable"
+        description="This monitor may have been deleted or you may not have access to it."
+      >
+        <Button asChild>
+          <Link to="/monitors">Back to monitors</Link>
+        </Button>
+      </EmptyState>
+    )
+  }
 
   const checks = checksData?.results ?? []
 

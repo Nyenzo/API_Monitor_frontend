@@ -1,4 +1,5 @@
 import { useAuth } from '@/hooks/use-auth'
+import { useNavigate } from '@tanstack/react-router'
 import { useTheme } from '@/hooks/use-theme'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -19,11 +20,17 @@ interface HeaderProps {
 
 export function Header({ onMobileMenuToggle }: HeaderProps) {
   const { user, signOut } = useAuth()
+  const navigate = useNavigate()
   const { theme, setTheme } = useTheme()
 
   const initials = user?.email
     ? ((user.email.split('@')[0] ?? '').split(/[._-]/).map((p) => (p[0] ?? '').toUpperCase()).join('').slice(0, 2) || '??')
     : '??'
+
+  async function handleSignOut() {
+    await signOut()
+    await navigate({ to: '/login' })
+  }
 
   return (
     <header className="flex items-center h-14 px-6 border-b bg-card/80 backdrop-blur-md gap-4 sticky top-0 z-30">
@@ -50,7 +57,7 @@ export function Header({ onMobileMenuToggle }: HeaderProps) {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+          <Button variant="ghost" className="relative h-8 w-8 rounded-full" aria-label="Account menu">
             <Avatar className="h-8 w-8">
               <AvatarFallback className="text-xs">{initials}</AvatarFallback>
             </Avatar>
@@ -63,7 +70,7 @@ export function Header({ onMobileMenuToggle }: HeaderProps) {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => signOut()}>
+          <DropdownMenuItem onClick={() => void handleSignOut()}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
           </DropdownMenuItem>

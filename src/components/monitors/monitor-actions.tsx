@@ -11,8 +11,9 @@ import {
 } from '@/components/ui/dialog'
 import { useDeleteMonitor, useToggleMonitor, useTestMonitor } from '@/hooks/use-monitors'
 import { toast } from '@/hooks/use-toast'
+import { api } from '@/lib/api'
 import type { Monitor } from '@/types/monitor'
-import { Loader2, Pause, Play, Trash2, Zap, Pencil } from 'lucide-react'
+import { Download, Loader2, Pause, Play, Trash2, Zap, Pencil } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 
@@ -24,6 +25,7 @@ interface MonitorActionsProps {
 export function MonitorActions({ monitor }: MonitorActionsProps) {
   const navigate = useNavigate()
   const [deleteOpen, setDeleteOpen] = useState(false)
+  const [isDownloading, setIsDownloading] = useState(false)
 
   const deleteMutation = useDeleteMonitor()
   const toggleMutation = useToggleMonitor()
@@ -81,6 +83,21 @@ export function MonitorActions({ monitor }: MonitorActionsProps) {
     }
   }
 
+  async function handleDownload() {
+    setIsDownloading(true)
+    try {
+      await api.download(`/api/v1/monitors/${monitor.id}/results/export`, `results_${monitor.id}.csv`)
+    } catch (err: unknown) {
+      toast({
+        title: 'Export failed',
+        description: err instanceof Error ? err.message : 'Unknown error',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsDownloading(false)
+    }
+  }
+
   return (
     <div className="flex items-center gap-2">
       <Button
@@ -114,6 +131,16 @@ export function MonitorActions({ monitor }: MonitorActionsProps) {
             Resume
           </>
         )}
+      </Button>
+
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handleDownload}
+        disabled={isDownloading}
+      >
+        {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4 mr-1" />}
+        Export CSV
       </Button>
 
       <Button asChild variant="outline" size="sm">

@@ -1,5 +1,5 @@
 import { Link, useRouterState } from '@tanstack/react-router'
-import { LayoutDashboard, Activity, Bell, Settings, X } from 'lucide-react'
+import { LayoutDashboard, Activity, Bell, Settings, ShieldCheck, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 
@@ -8,6 +8,7 @@ const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/monitors', label: 'Monitors', icon: Activity },
   { to: '/alerts', label: 'Alerts', icon: Bell },
+  { to: '/release-verifications', label: 'Release Checks', icon: ShieldCheck },
   { to: '/settings', label: 'Settings', icon: Settings },
 ] as const
 
@@ -33,7 +34,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
             </div>
             <span className="font-bold text-base tracking-tight">API Monitor</span>
           </div>
-          <Button variant="ghost" size="icon" onClick={onClose}>
+          <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close menu">
             <X className="h-5 w-5" />
           </Button>
         </div>
