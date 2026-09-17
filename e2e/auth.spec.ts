@@ -25,6 +25,12 @@ test.describe('Login Page', () => {
     const signupLink = page.getByRole('link', { name: /sign up|create/i })
     await expect(signupLink).toBeVisible()
   })
+
+  test('shows only configured OAuth providers', async ({ page }) => {
+    await page.goto('/login')
+    await expect(page.getByRole('button', { name: 'Sign in with Google' })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Sign in with GitHub' })).toHaveCount(0)
+  })
 })
 
 test.describe('Landing Page', () => {
