@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) throw error
   }, [])
 
-  // Send a password reset email via Supabase (SMTP2GO delivers it)
+  // Send a password reset email through Supabase Auth.
   const resetPassword = useCallback(async (email: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`,
