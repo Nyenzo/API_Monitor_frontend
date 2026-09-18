@@ -7,7 +7,6 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from '@/hooks/use-toast'
 import { Activity, Loader2 } from 'lucide-react'
-import { OAuthButtons } from '@/components/auth/oauth-buttons'
 
 // Login card with email and password fields, error toast, and sign-up link
 export function LoginForm() {
@@ -88,12 +87,6 @@ export function LoginForm() {
               Sign In
             </Button>
           </form>
-          <div className="flex items-center gap-3 text-xs text-muted-foreground" aria-hidden="true">
-            <span className="h-px flex-1 bg-border" />
-            <span>or continue with</span>
-            <span className="h-px flex-1 bg-border" />
-          </div>
-          <OAuthButtons mode="sign-in" />
         </CardContent>
         <CardFooter>
           <p className="text-sm text-muted-foreground text-center w-full">

@@ -26,9 +26,9 @@ test.describe('Login Page', () => {
     await expect(signupLink).toBeVisible()
   })
 
-  test('shows only configured OAuth providers', async ({ page }) => {
+  test('does not advertise unconfigured OAuth providers', async ({ page }) => {
     await page.goto('/login')
-    await expect(page.getByRole('button', { name: 'Sign in with Google' })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Sign in with Google' })).toHaveCount(0)
     await expect(page.getByRole('button', { name: 'Sign in with GitHub' })).toHaveCount(0)
   })
 })

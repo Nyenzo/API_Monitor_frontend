@@ -15,7 +15,6 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedReleaseVerificationsRouteImport } from './routes/_authenticated/release-verifications'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -52,11 +51,6 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthCallbackRoute = AuthCallbackRouteImport.update({
-  id: '/auth/callback',
-  path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
@@ -115,7 +109,6 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/release-verifications': typeof AuthenticatedReleaseVerificationsRoute
   '/settings': typeof AuthenticatedSettingsRoute
-  '/auth/callback': typeof AuthCallbackRoute
   '/monitors/new': typeof AuthenticatedMonitorsNewRoute
   '/monitors/': typeof AuthenticatedMonitorsIndexRoute
   '/monitors/$monitorId/edit': typeof AuthenticatedMonitorsMonitorIdEditRoute
@@ -131,7 +124,6 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/release-verifications': typeof AuthenticatedReleaseVerificationsRoute
   '/settings': typeof AuthenticatedSettingsRoute
-  '/auth/callback': typeof AuthCallbackRoute
   '/monitors/new': typeof AuthenticatedMonitorsNewRoute
   '/monitors': typeof AuthenticatedMonitorsIndexRoute
   '/monitors/$monitorId/edit': typeof AuthenticatedMonitorsMonitorIdEditRoute
@@ -149,7 +141,6 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/release-verifications': typeof AuthenticatedReleaseVerificationsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
-  '/auth/callback': typeof AuthCallbackRoute
   '/_authenticated/monitors/new': typeof AuthenticatedMonitorsNewRoute
   '/_authenticated/monitors/': typeof AuthenticatedMonitorsIndexRoute
   '/_authenticated/monitors/$monitorId/edit': typeof AuthenticatedMonitorsMonitorIdEditRoute
@@ -167,7 +158,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/release-verifications'
     | '/settings'
-    | '/auth/callback'
     | '/monitors/new'
     | '/monitors/'
     | '/monitors/$monitorId/edit'
@@ -183,7 +173,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/release-verifications'
     | '/settings'
-    | '/auth/callback'
     | '/monitors/new'
     | '/monitors'
     | '/monitors/$monitorId/edit'
@@ -200,7 +189,6 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/release-verifications'
     | '/_authenticated/settings'
-    | '/auth/callback'
     | '/_authenticated/monitors/new'
     | '/_authenticated/monitors/'
     | '/_authenticated/monitors/$monitorId/edit'
@@ -214,7 +202,6 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
-  AuthCallbackRoute: typeof AuthCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -259,13 +246,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth/callback': {
-      id: '/auth/callback'
-      path: '/auth/callback'
-      fullPath: '/auth/callback'
-      preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/settings': {
@@ -363,7 +343,6 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
-  AuthCallbackRoute: AuthCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
